@@ -1,24 +1,27 @@
-# Naukri Automation – Candidate Data Collection
+# Naukri Resume Downloader – Candidate Data Collection
 
-A Python-based automation project designed to assist with candidate search, candidate data collection, and resume downloading through Naukri Resdex, using browser automation.
+A Python-based browser automation tool for authorized recruitment workflows on Naukri Recruiter / Resdex. It helps automate candidate profile navigation, resume downloads, resume data extraction, and Excel reporting.
 
 ## Features
 
-- Automates supported browser interactions for candidate search.
-- Helps collect candidate information from search results.
-- Supports resume downloading through permitted user-account actions.
-- Uses Python and Playwright for browser automation.
-- Supports parsing downloaded PDF and DOCX resumes.
-- Uses Pandas to organize extracted data for Excel export.
-- Keeps candidate data and browser sessions locally rather than committing them to GitHub.
+- **Candidate Search:** Uses a candidate search URL generated in Naukri Resdex.
+- **Browser Automation:** Uses Google Chrome and your Naukri Recruiter login.
+- **Resume Downloading:** Downloads candidate resumes in PDF or Word format.
+- **Resume Parsing:** Extracts available details such as name, email, phone number, experience, city, qualifications, and skills.
+- **Excel Reporting:** Organizes extracted candidate information into a spreadsheet, with one row per candidate.
+- **Pagination:** Moves through subsequent search result pages automatically.
+- **Duplicate Prevention:** Remembers previously downloaded candidates to help avoid duplicate downloads and unnecessary CV credit usage.
+- **Local Data Storage:** Keeps working data and browser sessions on your computer.
 
-## Tech Stack
+## Technology Stack
 
-- **Python** – Core automation logic
-- **Playwright** – Browser automation
-- **Pandas** – Data processing and Excel export
-- **PyMuPDF** – PDF text extraction
-- **python-docx** – DOCX resume parsing
+- Python 3.12
+- Playwright
+- Google Chrome
+- PyMuPDF
+- Pandas
+- OpenPyXL
+- python-docx
 
 ## Project Structure
 
@@ -28,97 +31,194 @@ naukri-automation/
 ├── recorded.py
 ├── .gitignore
 ├── Naukri_Automation_User_Guide.pdf
-├── local_data/       # Local data; not committed
-├── session/          # Local session files; not committed
-├── venv/             # Python virtual environment; not committed
-└── chrome-profile/   # Local browser profile; not committed
+├── venv/                  # Local Python environment
+├── session/               # Local session data
+├── local_data/            # Local candidate data
+└── chrome_naukri_profile/ # Browser profile, if used
 ```
 
-The actual files and directories may differ depending on your local setup.
+The directories shown for local data and browser profiles are examples; the actual structure depends on your setup. Local environments, browser profiles, session files, and candidate data should not be committed to GitHub.
 
 ## Prerequisites
 
-- Python 3.10 or later (recommended; verify compatibility with your installed dependencies)
-- Google Chrome or another supported browser
-- An authorized Naukri Resdex account
-- Git, if you want to clone the repository
+Before using the tool, ensure you have:
 
-## Installation
+- Windows 10 or Windows 11
+- Google Chrome installed
+- Naukri Launcher installed
+- An authorized, working Naukri Recruiter / Resdex account
+- Python 3.12 installed from [python.org](https://www.python.org/), with Python added to PATH
+- This repository copied or cloned to your computer
+
+## Installation and Setup
 
 ### 1. Clone the repository
 
-```bash
+Open PowerShell and run:
+
+```powershell
 git clone https://github.com/rajjaiswal3858/Naukri_automation_CANDIDATE_DATA_COLLECTION.git
 cd Naukri_automation_CANDIDATE_DATA_COLLECTION
 ```
 
 ### 2. Create a virtual environment
 
-**Windows PowerShell:**
-
 ```powershell
 python -m venv venv
-.\venv\Scripts\Activate.ps1
 ```
 
-### 3. Install dependencies
+### 3. Install the required packages
 
-Install the packages required by the project:
+Use the virtual environment's Python executable:
 
 ```powershell
-python -m pip install playwright pandas pymupdf python-docx openpyxl
+.\venv\Scripts\python.exe -m pip install playwright pymupdf pandas openpyxl python-docx
 ```
 
-If the project has a `requirements.txt` file, prefer installing the pinned dependencies from it:
+Wait until the installation finishes.
+
+### 4. Configure Chrome permissions if required
+
+On the computer where the tool is already configured, this step may already be complete.
+
+If the tool displays a message stating that administrator rights are required to configure Chrome's profile folder:
+
+1. Open PowerShell as administrator.
+2. Copy the exact `reg add` command displayed by the tool.
+3. Paste that command into the administrator PowerShell window and press Enter.
+4. Close the administrator window.
+5. Run the automation again in a normal PowerShell window.
+
+**Important:** The guide states that this setting can affect which Chrome profile opens by default. Follow the tool's instructions carefully and use the documented procedure to restore normal Chrome settings when needed.
+
+## Daily Usage
+
+### Step 1: Run a candidate search
+
+1. Log in to Naukri Recruiter / Resdex.
+2. Configure your candidate search using keywords, experience, location, and activity filters.
+3. Run the search and wait for the results page.
+4. Copy the complete URL from the browser address bar.
+5. Keep the URL ready in Notepad.
+
+Example search URL format:
+
+```text
+https://resdex.naukri.com/v3/search?EZ_KEYWORD_ANY=US+Accounting&activeIn=365...
+```
+
+The example is illustrative. Use the actual URL generated by your own search.
+
+### Step 2: Close Chrome if necessary
+
+Close regular Chrome windows before starting the automation if requested by the tool. If the automation-controlled Chrome window is already open from an earlier run, follow the tool's on-screen instructions.
+
+### Step 3: Open PowerShell in the project folder
+
+1. Open the project folder in File Explorer.
+2. Click the address bar.
+3. Type `powershell`.
+4. Press Enter.
+
+### Step 4: Start the automation
+
+Run:
 
 ```powershell
-pip install -r requirements.txt
+.\venv\Scripts\python.exe main.py --limit 20
 ```
 
-### 4. Run the automation
+Change `20` to the number of candidates you want to process in that run.
 
-Check the available command-line options in `main.py`, then run the script using the appropriate arguments. For example, if supported by your version:
+If the virtual environment is activated, you can also use:
 
 ```powershell
-python main.py --limit 1
+python main.py --limit 20
 ```
 
-The exact arguments depend on the current implementation.
+### Step 5: Enter the Naukri Recruiter URL
 
-## Data and Privacy
+When prompted for the Naukri Recruiter URL, enter:
 
-- Keep browser profiles, authentication cookies, session files, and credentials private.
-- Do not commit `.env` files, real candidate records, or downloaded resumes to a public repository.
-- Store candidate data locally and restrict access to authorized users.
-- Collect and process candidate information only when authorized and in accordance with applicable privacy requirements and Naukri's terms.
-- Review `.gitignore` before every upload to ensure sensitive files are excluded.
+```text
+https://recruit.naukri.com/
+```
+
+Press Enter and follow the instructions displayed by the tool.
+
+Do not paste a URL containing a login token, `secureToken`, or `errorCode`. Use the standard Recruiter dashboard URL when prompted.
+
+### Step 6: Complete login and CAPTCHA checks
+
+Log in using your authorized account. If Naukri presents a CAPTCHA, solve it yourself when prompted.
+
+Allow the automation to proceed and monitor the browser and PowerShell output.
+
+### Step 7: Review the results
+
+After processing, check the local output files generated by the tool. Review the exported spreadsheet and verify that extracted candidate details are accurate.
+
+The exact output filenames and locations depend on the current implementation.
+
+## Command Reference
+
+| Command | Purpose |
+|---|---|
+| `python -m venv venv` | Creates the virtual environment |
+| `.\venv\Scripts\python.exe -m pip install playwright pymupdf pandas openpyxl python-docx` | Installs required packages |
+| `.\venv\Scripts\python.exe main.py --limit 20` | Starts automation with a candidate limit of 20 |
+| `git status` | Shows local Git changes |
+| `git add .` | Stages non-ignored files |
+| `git commit -m "Update Naukri automation"` | Creates a commit |
+| `git push` | Uploads committed changes to GitHub |
 
 ## Troubleshooting
 
-**Browser session not found**
+### Browser session not found
 
-Follow the login and session setup procedure implemented in the project before running automation.
+Follow the login and session setup instructions displayed by the application. Ensure the correct browser profile is being used.
 
-**No candidates found**
+### Chrome is already running
 
-Check the search criteria, account permissions, current page structure, and whether the search page loaded successfully.
+Close regular Chrome windows if the tool requests it, then retry. Do not delete browser profiles or session files without understanding their purpose.
 
-**Resume parsing issues**
+### No candidates found
 
-Confirm that downloaded files are valid PDF or DOCX documents and that the appropriate parsing libraries are installed.
+Check that the search URL is correct, the search results load successfully, and your account has access to the selected search.
 
-**Git push or authentication issues**
+### CAPTCHA appears
 
-Confirm that Git is configured and that your GitHub account has write access to the repository.
+Complete the CAPTCHA manually and follow the tool's prompts.
+
+### Package installation fails
+
+Verify that Python 3.12 is installed and run the installation command from the project folder.
+
+### Resume data is missing or incorrect
+
+Confirm that the resume downloaded successfully and is a supported PDF or Word document. Extracted details should be checked before using them for recruitment decisions.
+
+### PowerShell shows an error for `!`
+
+Do not prefix the command with `!`. That syntax is used in certain interactive environments, not in ordinary PowerShell commands.
+
+## Data Privacy and Security
+
+- Keep login credentials, browser cookies, session files, and authentication tokens private.
+- Do not upload actual candidate resumes or personal data to a public repository.
+- Keep `.env` files, local candidate datasets, and browser profiles excluded through `.gitignore`.
+- Restrict access to downloaded candidate data and delete it when no longer required.
+- Use the tool only for authorized recruitment activities and comply with applicable privacy laws and Naukri platform terms.
+- Review extracted information for accuracy and handle candidate information responsibly.
 
 ## Repository
 
-GitHub: https://github.com/rajjaiswal3858/Naukri_automation_CANDIDATE_DATA_COLLECTION
+GitHub: [Naukri Automation – Candidate Data Collection](https://github.com/rajjaiswal3858/Naukri_automation_CANDIDATE_DATA_COLLECTION)
 
 ## Disclaimer
 
-This project is intended for authorized recruitment workflows and data processing. Users are responsible for ensuring compliance with applicable laws, platform terms, account permissions, and candidate privacy requirements.
+This project is intended to assist with authorized recruitment workflows. Users are responsible for ensuring they have appropriate account permissions and comply with applicable laws, privacy requirements, and platform terms.
 
 ## License
 
-No license has been specified yet. Unless a license is added to this repository, reuse and redistribution are subject to applicable copyright law.
+No license has been specified for this repository. Until a license is added, reuse and redistribution remain subject to applicable copyright law.
