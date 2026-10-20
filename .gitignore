@@ -1,0 +1,30 @@
+
+@'
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# Browser profiles and cached sessions
+chrome-profile/
+chrome_naukri_profile/
+edge_naukri_profile/
+session/
+playwright/.auth/
+auth.json
+storage_state.json
+
+# Private candidate data and downloaded resumes
+local_data/
+local/
+*.xlsx
+*.csv
+*.pdf
+*.docx
+
+# Secrets
+.env
+.env.*
+!.env.example
+'@ | Set-Content -Encoding utf8 .gitignore
